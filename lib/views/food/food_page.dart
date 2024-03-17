@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 import 'package:soeasy/common/custom_button.dart';
 import 'package:soeasy/constants/constants.dart';
 import 'package:soeasy/controllers/foods_controller.dart';
+import 'package:soeasy/hooks/fetch_restaurant.dart';
 import 'package:soeasy/models/foods_model.dart';
 import 'package:soeasy/views/restaurant/restaurant_page.dart';
 
@@ -26,6 +27,7 @@ class _FoodPageState extends State<FoodPage> {
 
   @override
   Widget build(BuildContext context) {
+    final hookResult = useFetchRestaurant(widget.food.restaurant);
     final controller = Get.put(FoodController());
     return Scaffold(
       body: ListView(
@@ -97,8 +99,8 @@ class _FoodPageState extends State<FoodPage> {
                   right: 12.w,
                   child: CustomButton(
                     onTap: () {
-                      Get.to(() => const RestaurantPage(
-                            restaurant: null,
+                      Get.to(() => RestaurantPage(
+                            restaurant: hookResult.data,
                           ));
                     },
                     btnWidth: 120.w,
@@ -108,8 +110,6 @@ class _FoodPageState extends State<FoodPage> {
               ],
             ),
           ),
-
-          
         ],
       ),
     );

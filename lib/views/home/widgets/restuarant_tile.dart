@@ -3,10 +3,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:soeasy/common/app_style.dart';
 import 'package:soeasy/common/reusable_text.dart';
 import 'package:soeasy/constants/constants.dart';
 import 'package:soeasy/models/restaurants_model.dart';
+import 'package:soeasy/views/restaurant/restaurant_page.dart';
 
 class RestaurantTile extends StatelessWidget {
   RestaurantTile({super.key, required this.restaurant});
@@ -16,7 +18,9 @@ class RestaurantTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-        onTap: () {},
+        onTap: () {
+          Get.to(() => RestaurantPage(restaurant: restaurant));
+        },
         child: Stack(
           clipBehavior: Clip.hardEdge,
           children: [
@@ -98,16 +102,11 @@ class RestaurantTile extends StatelessWidget {
                 width: 60.w,
                 height: 19.h,
                 decoration: BoxDecoration(
-                    color:
-                        restaurant.isAvailable
-                            ? kPrimary
-                            : kSecondaryLight,
+                    color: restaurant.isAvailable ? kPrimary : kSecondaryLight,
                     borderRadius: BorderRadius.circular(10.r)),
                 child: Center(
                   child: ReusableText(
-                      text: restaurant.isAvailable == true
-                          ? "Open"
-                          : "Closed",
+                      text: restaurant.isAvailable == true ? "Open" : "Closed",
                       style: appStyle(12, kLightWhite, FontWeight.w600)),
                 ),
               ),

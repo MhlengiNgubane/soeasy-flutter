@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:soeasy/common/shimmers/nearby_shimmer.dart';
 import 'package:soeasy/hooks/fetch_restaurants.dart';
 import 'package:soeasy/models/restaurants_model.dart';
 import 'package:soeasy/views/home/widgets/restaurant_widget.dart';
+import 'package:soeasy/views/restaurant/restaurant_page.dart';
 
 class NearbyRestaurants extends HookWidget {
   const NearbyRestaurants({super.key});
@@ -25,6 +27,9 @@ class NearbyRestaurants extends HookWidget {
               children: List.generate(restaurants!.length, (i) {
                 RestaurantsModel restaurant = restaurants[i];
                 return RestaurantWidget(
+                    onTap: () {
+                      Get.to(() => RestaurantPage(restaurant: restaurant));
+                    },
                     image: restaurant.imageUrl,
                     logo: restaurant.logoUrl,
                     title: restaurant.title,

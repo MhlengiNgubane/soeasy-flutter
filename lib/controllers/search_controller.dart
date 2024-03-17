@@ -17,7 +17,7 @@ class SearchFoodController extends GetxController {
 
   RxBool _isTriggered = false.obs;
 
-  bool get isTriggered => _isLoading.value;
+  bool get isTriggered => _isTriggered.value;
 
   set setTrigger(bool value) {
     _isTriggered.value = value;
