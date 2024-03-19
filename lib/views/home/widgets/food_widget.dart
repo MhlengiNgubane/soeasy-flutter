@@ -61,7 +61,7 @@ class FoodWidget extends StatelessWidget {
                               text: title,
                               style: appStyle(12, kDark, FontWeight.w500)),
                           ReusableText(
-                              text: "\$ $price",
+                              text: "R $price",
                               style: appStyle(12, kPrimary, FontWeight.w600)),
                         ],
                       ),

@@ -128,7 +128,7 @@ class FoodTile extends StatelessWidget {
                     color: kPrimary, borderRadius: BorderRadius.circular(10.r)),
                 child: Center(
                   child: ReusableText(
-                      text: "\$ ${food.price.toStringAsFixed(2)}",
+                      text: "R ${food.price.toStringAsFixed(2)}",
                       style: appStyle(12, kLightWhite, FontWeight.bold)),
                 ),
               ),
