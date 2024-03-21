@@ -14,6 +14,7 @@ import 'package:soeasy/constants/constants.dart';
 import 'package:soeasy/controllers/foods_controller.dart';
 import 'package:soeasy/hooks/fetch_restaurant.dart';
 import 'package:soeasy/models/foods_model.dart';
+import 'package:soeasy/views/auth/phone_verification_page.dart';
 import 'package:soeasy/views/restaurant/restaurant_page.dart';
 
 class FoodPage extends StatefulHookWidget {
@@ -131,7 +132,8 @@ class _FoodPageState extends State<FoodPage> {
                     ),
                     Obx(
                       () => ReusableText(
-                        text: "R ${widget.food.price * controller.count.value}",
+                        text:
+                            "R ${(widget.food.price * controller.count.value).toStringAsFixed(2)}",
                         style: appStyle(18, kPrimary, FontWeight.w600),
                       ),
                     ),
@@ -256,7 +258,7 @@ class _FoodPageState extends State<FoodPage> {
                   ],
                 ),
                 SizedBox(
-                  height: 15.h,
+                  height: 20.h,
                 ),
                 ReusableText(
                   text: "Preferences",
@@ -322,9 +324,73 @@ class _FoodPageState extends State<FoodPage> {
   Future<dynamic> showVerificationSheet(BuildContext context) {
     return showModalBottomSheet(
       context: context,
+      backgroundColor: Colors.transparent,
+      showDragHandle: true,
       builder: (BuildContext context) {
         return Container(
-          height: 525.h,
+          height: 500.h,
+          width: width,
+          decoration: BoxDecoration(
+            image: const DecorationImage(
+              image: AssetImage("assets/images/restaurant_bk.png"),
+              fit: BoxFit.fill,
+            ),
+            color: kLightWhite,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(12.r),
+              topRight: Radius.circular(12.r),
+            ),
+          ),
+          child: Padding(
+            padding: EdgeInsets.all(8.h),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(
+                  height: 10.h,
+                ),
+                ReusableText(
+                  text: "Verify your phone Number",
+                  style: appStyle(18, kPrimary, FontWeight.w600),
+                ),
+                SizedBox(
+                  height: 250.h,
+                  // Remove SingleChildScrollView if you sort the pixel issue
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: List.generate(
+                        verificationReasons.length,
+                        (index) {
+                          return ListTile(
+                            leading: const Icon(
+                              Icons.check_circle_outline,
+                              color: kPrimary,
+                            ),
+                            title: Text(
+                              verificationReasons[index],
+                              textAlign: TextAlign.justify,
+                              style:
+                                  appStyle(11, kGrayLight, FontWeight.normal),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 10.h,
+                ),
+                CustomButton(
+                  text: "Verify your Phone Number",
+                  btnHeight: 35.h,
+                  onTap: () {
+                    Get.to(() => const PhoneVerificationPage());
+                  },
+                ),
+              ],
+            ),
+          ),
         );
       },
     );
