@@ -34,6 +34,7 @@ class _FoodPageState extends State<FoodPage> {
   Widget build(BuildContext context) {
     final hookResult = useFetchRestaurant(widget.food.restaurant);
     final controller = Get.put(FoodController());
+    controller.loadAdditives(widget.food.additives);
     return Scaffold(
       body: ListView(
         padding: EdgeInsets.zero,
@@ -127,16 +128,14 @@ class _FoodPageState extends State<FoodPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     ReusableText(
-                      text: widget.food.title,
-                      style: appStyle(18, kDark, FontWeight.w600),
-                    ),
+                        text: widget.food.title,
+                        style: appStyle(18, kDark, FontWeight.w600)),
                     Obx(
                       () => ReusableText(
-                        text:
-                            "R ${(widget.food.price * controller.count.value).toStringAsFixed(2)}",
-                        style: appStyle(18, kPrimary, FontWeight.w600),
-                      ),
-                    ),
+                          text:
+                              "R ${((widget.food.price + controller.additivePrice) * controller.count.value).toStringAsFixed(2)}",
+                          style: appStyle(18, kPrimary, FontWeight.w600)),
+                    )
                   ],
                 ),
                 SizedBox(
@@ -146,7 +145,7 @@ class _FoodPageState extends State<FoodPage> {
                   widget.food.description,
                   textAlign: TextAlign.justify,
                   maxLines: 8,
-                  style: appStyle(12, kGray, FontWeight.w400),
+                  style: appStyle(11, kGray, FontWeight.w400),
                 ),
                 SizedBox(
                   height: 5.h,
@@ -155,26 +154,24 @@ class _FoodPageState extends State<FoodPage> {
                   height: 18.h,
                   child: ListView(
                     scrollDirection: Axis.horizontal,
-                    children: List.generate(
-                      widget.food.foodTags.length,
-                      (index) {
-                        final tag = widget.food.foodTags[index];
-                        return Container(
-                          margin: EdgeInsets.only(right: 5.w),
-                          decoration: BoxDecoration(
-                              color: kPrimary,
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(15.r))),
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 6.w),
-                            child: ReusableText(
-                              text: tag,
-                              style: appStyle(11, kWhite, FontWeight.w400),
-                            ),
+                    children:
+                        List.generate(widget.food.foodTags.length, (index) {
+                      final tag = widget.food.foodTags[index];
+                      return Container(
+                        margin: EdgeInsets.only(right: 5.w),
+                        decoration: BoxDecoration(
+                            color: kPrimary,
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(15.r))),
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 6.w),
+                          child: ReusableText(
+                            text: tag,
+                            style: appStyle(11, kWhite, FontWeight.w400),
                           ),
-                        );
-                      },
-                    ),
+                        ),
+                      );
+                    }),
                   ),
                 ),
                 SizedBox(
@@ -187,37 +184,39 @@ class _FoodPageState extends State<FoodPage> {
                 SizedBox(
                   height: 10.h,
                 ),
-                Column(
-                  children:
-                      List.generate(widget.food.additives.length, (index) {
-                    final additive = widget.food.additives[index];
-
-                    return CheckboxListTile(
-                      contentPadding: EdgeInsets.zero,
-                      visualDensity: VisualDensity.compact,
-                      dense: true,
-                      activeColor: kPrimary,
-                      value: true,
-                      tristate: false,
-                      title: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          ReusableText(
-                            text: additive.title,
-                            style: appStyle(11, kDark, FontWeight.w400),
+                Obx(
+                  () => Column(
+                    children:
+                        List.generate(controller.additivesList.length, (index) {
+                      final additive = controller.additivesList[index];
+                      return CheckboxListTile(
+                          contentPadding: EdgeInsets.zero,
+                          visualDensity: VisualDensity.compact,
+                          dense: true,
+                          activeColor: kPrimary,
+                          value: additive.isChecked.value,
+                          tristate: false,
+                          title: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              ReusableText(
+                                  text: additive.title,
+                                  style: appStyle(11, kDark, FontWeight.w400)),
+                              SizedBox(
+                                width: 5.w,
+                              ),
+                              ReusableText(
+                                  text: "R ${additive.price}",
+                                  style:
+                                      appStyle(11, kPrimary, FontWeight.w600)),
+                            ],
                           ),
-                          SizedBox(
-                            width: 5.w,
-                          ),
-                          ReusableText(
-                            text: "R ${additive.price}",
-                            style: appStyle(11, kPrimary, FontWeight.w600),
-                          ),
-                        ],
-                      ),
-                      onChanged: (bool? value) {},
-                    );
-                  }),
+                          onChanged: (bool? value) {
+                            additive.toggleChecked();
+                            controller.getTotalPrice();
+                          });
+                    }),
+                  ),
                 ),
                 SizedBox(
                   height: 20.h,
@@ -271,7 +270,7 @@ class _FoodPageState extends State<FoodPage> {
                   height: 65.h,
                   child: CustomTextWidget(
                     controller: _preferences,
-                    hintText: "Add note with your preferences",
+                    hintText: "Add a note with your preferences",
                     maxLines: 3,
                   ),
                 ),
@@ -294,7 +293,7 @@ class _FoodPageState extends State<FoodPage> {
                         child: Padding(
                           padding: EdgeInsets.symmetric(horizontal: 12.w),
                           child: ReusableText(
-                            text: "place Order",
+                            text: "Place Order",
                             style: appStyle(18, kLightWhite, FontWeight.w600),
                           ),
                         ),
