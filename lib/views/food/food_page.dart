@@ -95,7 +95,7 @@ class _FoodPageState extends State<FoodPage> {
                     },
                     child: const Icon(
                       Ionicons.chevron_back_circle,
-                      color: kPrimary,
+                      color: kLightWhite,
                       size: 30,
                     ),
                   ),

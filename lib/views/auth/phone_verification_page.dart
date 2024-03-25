@@ -20,12 +20,8 @@ class PhoneVerificationPage extends StatelessWidget {
         FontWeight.bold,
       ),
       textColor: kDark,
-      onSend: (String value) {
-        print('Phone number: $value');
-      },
-      onVerification: (String value) {
-        print('OTP: $value');
-      },
+      onSend: (String value) {},
+      onVerification: (String value) {},
     );
   }
 }
