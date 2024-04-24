@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
+import 'package:get/get.dart';
 import 'package:soeasy/common/custom_button.dart';
+import 'package:soeasy/common/custom_container.dart';
+import 'package:soeasy/constants/constants.dart';
+import 'package:soeasy/views/auth/login_redirect.dart';
 import 'package:soeasy/views/profile/widget/profile_app_bar.dart';
 import 'package:soeasy/views/profile/widget/profile_title_widget.dart';
 import 'package:soeasy/views/profile/widget/user_info_widget.dart';
-
-import '../../common/custom_container.dart';
-import '../../constants/constants.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
@@ -38,7 +39,9 @@ class ProfilePage extends StatelessWidget {
                   physics: const NeverScrollableScrollPhysics(),
                   children: [
                     ProfileTitleWidget(
-                      onTap: () {},
+                      onTap: () {
+                        Get.to(() => const LoginRedirect());
+                      },
                       title: "My Orders",
                       icon: Ionicons.fast_food_outline,
                     ),
